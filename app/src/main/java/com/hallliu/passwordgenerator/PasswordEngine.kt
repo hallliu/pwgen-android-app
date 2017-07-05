@@ -35,7 +35,6 @@ class PasswordSpecification(val siteName: String, val pwLength: Int,
             iterationCounter++
         }
     }
-
 }
 
 fun base64_map(bytes: ByteArray, map: ByteArray): String {
