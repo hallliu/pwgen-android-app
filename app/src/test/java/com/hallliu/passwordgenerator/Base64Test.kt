@@ -34,7 +34,7 @@ class Base64GenTest {
                 "dGVzdCBpbnB1dCB0ZXN0IGlucHV0IDI=", "")
         inputs.zip(expectedOutputs).forEach {
             Assert.assertEquals("input len ${it.first.size}",
-                    it.second, base64_map(it.first, standardBase64Map))
+                    it.second, encodeToBase64(it.first, standardBase64Map))
         }
     }
 }

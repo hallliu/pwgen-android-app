@@ -8,9 +8,11 @@ import android.os.AsyncTask
 import android.os.Handler
 import android.os.HandlerThread
 
-class DbInterface(val db: SQLiteDatabase) {
+class DbInterface() {
     val handler: Handler
     private val handlerThread = HandlerThread(this.javaClass.simpleName)
+
+    lateinit var db: SQLiteDatabase
 
     init {
         handlerThread.start()
@@ -20,20 +22,6 @@ class DbInterface(val db: SQLiteDatabase) {
     companion object {
         enum class DbUpdateResult {
             SUCCESS, ALREADY_EXISTS, OTHER_ERROR
-        }
-
-        fun create(context: Context, callback: (DbInterface) -> Unit) {
-            class DbCreationTask : AsyncTask<Unit, Unit, DbInterface>() {
-                override fun doInBackground(vararg params: Unit): DbInterface {
-                    val helper = SiteDbHelper(context)
-                    return DbInterface(helper.writableDatabase)
-                }
-
-                override fun onPostExecute(result: DbInterface) {
-                    callback(result)
-                }
-            }
-            DbCreationTask().execute()
         }
     }
 

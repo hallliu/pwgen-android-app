@@ -3,6 +3,7 @@ package com.hallliu.passwordgenerator
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import javax.inject.Inject
 
 const val TABLE_NAME = "site_table"
 const val COLUMN_ID = "_id"
@@ -17,7 +18,7 @@ const val COLUMN_REQUIRED_CHARS = "required_chars"
 // denotes the version of the password. integer.
 const val COLUMN_VERSION = "version"
 
-class SiteDbHelper(val context: Context) : SQLiteOpenHelper(context,
+class SiteDbHelper @Inject constructor(context: Context) : SQLiteOpenHelper(context,
         SiteDbHelper.Companion.DB_NAME, null, SiteDbHelper.Companion.DB_VERSION) {
     companion object {
         const val DB_VERSION = 1

@@ -24,7 +24,7 @@ class PasswordSpecification(val siteName: String, val pwLength: Int,
             // Compatibility with old system -- don't tack on a postfix unless version > 1 or
             // requirements not met.
             val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
-            val potentialPassword = base64_map((siteBase + postfix).toByteArray(), byteMap)
+            val potentialPassword = encodeToBase64((siteBase + postfix).toByteArray(), byteMap)
                     .substring(0 until pwLength)
             if (requiredChars.all { potentialPassword.contains(it) }) {
                 versionCounter++
@@ -37,7 +37,7 @@ class PasswordSpecification(val siteName: String, val pwLength: Int,
     }
 }
 
-fun base64_map(bytes: ByteArray, map: ByteArray): String {
+fun encodeToBase64(bytes: ByteArray, map: ByteArray): String {
     val base64Chars = mutableListOf<Byte>()
     for (i in 0 until bytes.size step 3) {
         val byte1 = bytes[i].toInt()
