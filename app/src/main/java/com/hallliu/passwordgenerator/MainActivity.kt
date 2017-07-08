@@ -11,8 +11,6 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var dbHelper: SiteDbHelper
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         }
         val graph = DaggerApplicationComponent.builder().androidModule(AndroidModule(this)).build()
         graph.inject(this)
-        dbHelper.readableDatabase
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -1,15 +1,14 @@
 package com.hallliu.passwordgenerator
 
 import android.content.ContentValues
-import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.os.AsyncTask
 import android.os.Handler
 import android.os.HandlerThread
+import javax.inject.Inject
 
-class DbInterface() {
-    val handler: Handler
+class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
+    private val handler: Handler
     private val handlerThread = HandlerThread(this.javaClass.simpleName)
 
     lateinit var db: SQLiteDatabase
@@ -17,6 +16,7 @@ class DbInterface() {
     init {
         handlerThread.start()
         handler = Handler(handlerThread.looper)
+        handler.post { db = dbHelper.writableDatabase }
     }
 
     companion object {

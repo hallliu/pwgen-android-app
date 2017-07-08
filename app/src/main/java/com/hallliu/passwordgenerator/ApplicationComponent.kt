@@ -1,6 +1,5 @@
 package com.hallliu.passwordgenerator
 
-import android.content.Context
 import dagger.Component
 import javax.inject.Singleton
 

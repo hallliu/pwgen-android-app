@@ -4,7 +4,7 @@ const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 const val NUMBERS = "1234567890"
 const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
 
-class PasswordSpecification(val siteName: String, val pwLength: Int,
+data class PasswordSpecification(val siteName: String, val pwLength: Int,
                                  val permittedChars: String, val requiredChars: String = "",
                                  val pwVersion: Int) {
     init {
@@ -12,28 +12,28 @@ class PasswordSpecification(val siteName: String, val pwLength: Int,
             throw IllegalArgumentException("Required chars must be permitted")
         }
     }
+}
 
-    fun generatePw(masterPw: String): String {
-        val siteBase = masterPw + siteName
-        val byteMap = (permittedChars + genLowers(64 - permittedChars.length)).toByteArray()
+fun generatePw(spec: PasswordSpecification, masterPw: String): String {
+    val siteBase = masterPw + spec.siteName
+    val byteMap = (spec.permittedChars + genLowers(64 - spec.permittedChars.length)).toByteArray()
 
-        var versionCounter = 0
-        var iterationCounter = 0
+    var versionCounter = 0
+    var iterationCounter = 0
 
-        while (true) {
-            // Compatibility with old system -- don't tack on a postfix unless version > 1 or
-            // requirements not met.
-            val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
-            val potentialPassword = encodeToBase64((siteBase + postfix).toByteArray(), byteMap)
-                    .substring(0 until pwLength)
-            if (requiredChars.all { potentialPassword.contains(it) }) {
-                versionCounter++
-                if (versionCounter >= pwVersion) {
-                    return potentialPassword
-                }
+    while (true) {
+        // Compatibility with old system -- don't tack on a postfix unless version > 1 or
+        // requirements not met.
+        val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
+        val potentialPassword = encodeToBase64((siteBase + postfix).toByteArray(), byteMap)
+                .substring(0 until spec.pwLength)
+        if (spec.requiredChars.all { potentialPassword.contains(it) }) {
+            versionCounter++
+            if (versionCounter >= spec.pwVersion) {
+                return potentialPassword
             }
-            iterationCounter++
         }
+        iterationCounter++
     }
 }
 
