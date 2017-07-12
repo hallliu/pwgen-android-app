@@ -12,7 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,6 @@
         </activity>
         <activity
             android:name=".AddSiteActivity"
-            android:label="@string/title_activity_add_site"
             android:theme="@style/AppTheme"></activity>
     </application>
 

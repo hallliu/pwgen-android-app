@@ -8,4 +8,77 @@
     tools:context="com.hallliu.passwordgenerator.AddSiteActivity"
     tools:showIn="@layout/activity_add_site">
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/siteNameInputLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/uppercaseSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        app:layout_constraintVertical_chainStyle="spread">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/siteNameEditText"
+            android:hint="@string/site_name_field_hint" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Switch
+        android:id="@+id/uppercaseSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/uppercase_switch_label"
+        app:layout_constraintBottom_toTopOf="@+id/numbersSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/siteNameInputLayout"
+        tools:layout_editor_absoluteY="278dp" />
+
+    <Switch
+        android:id="@+id/numbersSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/numbers_switch_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="333dp"
+        app:layout_constraintTop_toBottomOf="@+id/uppercaseSwitch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/symbolsSwitch" />
+
+    <Switch
+        android:id="@+id/symbolsSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/symbols_switch_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numbersSwitch"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button2" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_site_button_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintTop_toBottomOf="@+id/symbolsSwitch" />
 </android.support.constraint.ConstraintLayout>

@@ -3,5 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="master_pw_hint">Master Password</string>
     <string name="site_filter">Site Filter</string>
-    <string name="title_activity_add_site">AddSiteActivity</string>
+    <string name="site_name_field_hint">Site Name</string>
+    <string name="uppercase_switch_label">Use Uppercase</string>
+    <string name="numbers_switch_label">Use Numbers</string>
+    <string name="symbols_switch_label">Use Symbols (long-press to edit)</string>
+    <string name="save_site_button_label">Save Site</string>
 </resources>
