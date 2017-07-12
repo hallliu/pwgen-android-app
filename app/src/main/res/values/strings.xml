@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Password Generator</string>
     <string name="action_settings">Settings</string>
+    <string name="master_pw_hint">Master Password</string>
+    <string name="site_filter">Site Filter</string>
+    <string name="title_activity_add_site">AddSiteActivity</string>
 </resources>

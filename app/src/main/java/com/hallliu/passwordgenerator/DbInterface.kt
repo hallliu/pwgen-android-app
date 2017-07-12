@@ -70,6 +70,7 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
             values.put(COLUMN_REQUIRED_CHARS, pwSpec.requiredChars)
             values.put(COLUMN_PASSWORD_LENGTH, pwSpec.pwLength)
             values.put(COLUMN_VERSION, pwSpec.pwVersion)
+            values.put(COLUMN_LAST_MODIFIED, System.currentTimeMillis() / 1000)
             val row = db.insert(TABLE_NAME, null, values)
             callback(if (row == -1L) DbUpdateResult.OTHER_ERROR else DbUpdateResult.SUCCESS)
         }

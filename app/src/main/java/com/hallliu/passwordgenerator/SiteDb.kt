@@ -17,6 +17,8 @@ const val COLUMN_PERMITTED_CHARS = "permitted_chars"
 const val COLUMN_REQUIRED_CHARS = "required_chars"
 // denotes the version of the password. integer.
 const val COLUMN_VERSION = "version"
+// last modified date (unix time, UTC)
+const val COLUMN_LAST_MODIFIED = "last_modified"
 
 class SiteDbHelper @Inject constructor(context: Context) : SQLiteOpenHelper(context,
         SiteDbHelper.Companion.DB_NAME, null, SiteDbHelper.Companion.DB_VERSION) {
@@ -29,7 +31,8 @@ class SiteDbHelper @Inject constructor(context: Context) : SQLiteOpenHelper(cont
         db!!.execSQL("""
                 |CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_SITE_NAME TEXT,
                 | $COLUMN_PASSWORD_LENGTH INTEGER, $COLUMN_PERMITTED_CHARS TEXT,
-                | $COLUMN_REQUIRED_CHARS TEXT, $COLUMN_VERSION INTEGER""".trimMargin())
+                | $COLUMN_REQUIRED_CHARS TEXT, $COLUMN_VERSION INTEGER,
+                | $COLUMN_LAST_MODIFIED INTEGER""".trimMargin())
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
