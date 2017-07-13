@@ -1,5 +1,7 @@
 package com.hallliu.passwordgenerator
 
+import java.security.MessageDigest
+
 const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 const val NUMBERS = "1234567890"
 const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
@@ -25,8 +27,11 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
         // Compatibility with old system -- don't tack on a postfix unless version > 1 or
         // requirements not met.
         val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
-        val potentialPassword = encodeToBase64((siteBase + postfix).toByteArray(), byteMap)
-                .substring(0 until spec.pwLength)
+
+        val digest = MessageDigest.getInstance("SHA-256")
+        val output = digest.digest((siteBase + postfix).toByteArray())
+
+        val potentialPassword = encodeToBase64(output, byteMap).substring(0 until spec.pwLength)
         if (spec.requiredChars.all { potentialPassword.contains(it) }) {
             versionCounter++
             if (versionCounter >= spec.pwVersion) {

@@ -8,4 +8,5 @@
     <string name="numbers_switch_label">Use Numbers</string>
     <string name="symbols_switch_label">Use Symbols (long-press to edit)</string>
     <string name="save_site_button_label">Save Site</string>
+    <string name="copy_password_button_text">Copy</string>
 </resources>

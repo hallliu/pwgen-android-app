@@ -9,21 +9,21 @@
     tools:showIn="@layout/activity_add_site">
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
         android:id="@+id/siteNameInputLayout"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/uppercaseSwitch"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/siteNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/siteNameEditText"
             android:hint="@string/site_name_field_hint" />
     </android.support.design.widget.TextInputLayout>
 

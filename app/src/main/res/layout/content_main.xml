@@ -9,43 +9,40 @@
     tools:showIn="@layout/activity_main">
 
     <android.support.design.widget.TextInputLayout
-        app:passwordToggleEnabled="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/masterPwContainer"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
         android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/siteFilterField"
+        app:layout_constraintEnd_toStartOf="@+id/masterPwCorrectnessImage"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.05"
-        android:id="@+id/masterPwField">
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:passwordToggleEnabled="true"
+        tools:layout_editor_absoluteY="65dp">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="@string/master_pw_hint" />
+            android:id="@+id/masterPasswordEditText"
+            android:hint="@string/master_pw_hint"
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         app:passwordToggleEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/masterPwField"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/siteFilterField"
+        tools:layout_editor_absoluteY="123dp"
         android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/masterPwContainer"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.05"
-        android:id="@+id/siteFilterField">
+        app:layout_constraintBottom_toTopOf="@+id/spinner">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
@@ -58,37 +55,64 @@
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="21dp"
-        tools:layout_editor_absoluteX="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/siteFilterField"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.05"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/siteFilterField"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/passwordField"
+        android:text="aaabbbcccdde"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/button"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/copyPasswordButton"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
-        tools:layout_editor_absoluteY="486dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/copyPasswordButton" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/copyPasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteY="472dp"
+        android:text="@string/copy_password_button_text"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        tools:layout_editor_absoluteX="283dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toEndOf="@+id/passwordField"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <ImageView
+        android:id="@+id/masterPwCorrectnessImage"
+        android:layout_width="64dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:tint="@android:color/holo_red_light"
+        app:srcCompat="@drawable/ic_close_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/siteFilterField"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintStart_toEndOf="@+id/masterPwContainer"
+        app:layout_constraintHorizontal_bias="0.5" />
 </android.support.constraint.ConstraintLayout>

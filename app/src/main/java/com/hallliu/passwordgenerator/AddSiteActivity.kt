@@ -13,5 +13,4 @@ class AddSiteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_site)
         setSupportActionBar(toolbar)
     }
-
 }
