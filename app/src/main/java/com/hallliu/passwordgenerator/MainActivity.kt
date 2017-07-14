@@ -1,26 +1,39 @@
 package com.hallliu.passwordgenerator
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.security.MessageDigest
-
-// TODO: replace with SharedPrefs lookup
-const val MASTER_SHA256 = "0b47c69b1033498d5f33f5f7d97bb6a3126134751629f4d0185c115db44c094e"
 
 class MainActivity : AppCompatActivity() {
+    private var masterPasswordHash: String? = null
+
+    private var masterPwHashChangedListener = SharedPreferences.OnSharedPreferenceChangeListener {
+        sharedPreferences, key ->
+        if (key == MASTER_PW_HASH_KEY) {
+            masterPasswordHash = sharedPreferences.getString(MASTER_PW_HASH_KEY, null)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        val prefs = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        masterPasswordHash = prefs.getString(MASTER_PW_HASH_KEY, null)
+        prefs.registerOnSharedPreferenceChangeListener(masterPwHashChangedListener)
 
         masterPasswordEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) { }
@@ -28,24 +41,9 @@ class MainActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val digest = MessageDigest.getInstance("SHA-256")
-                val output = digest.digest(s.toString().toByteArray())
-                val HEX_CHARS = "0123456789abcdef".toCharArray()
+                val hashOfContent = hashMasterPwToHex(s.toString())
 
-                fun ByteArray.toHex() : String{
-                    val result = StringBuffer()
-
-                    forEach {
-                        val octet = it.toInt()
-                        val firstIndex = (octet and 0xF0).ushr(4)
-                        val secondIndex = octet and 0x0F
-                        result.append(HEX_CHARS[firstIndex])
-                        result.append(HEX_CHARS[secondIndex])
-                    }
-
-                    return result.toString()
-                }
-                if (output.toHex() == MASTER_SHA256) {
+                if (hashOfContent == masterPasswordHash) {
                     masterPwCorrectnessImage.setImageResource(R.drawable.ic_check_black_24dp)
                     masterPwCorrectnessImage.setColorFilter(
                             getColor(android.R.color.holo_green_light))
@@ -57,6 +55,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        masterPasswordEditText.setOnTouchListener { _, event ->
+            Log.i("MainActivity", "touched")
+            if (event.action == MotionEvent.ACTION_DOWN && masterPasswordHash == null) {
+                // TODO: show the set master pw dialog
+                Toast.makeText(this@MainActivity, "No Password Set", Toast.LENGTH_SHORT).show()
+            }
+            false
+        }
+
         fab.setOnClickListener { _ ->
             val intent = Intent(Intent.ACTION_MAIN)
             intent.setClass(this@MainActivity, AddSiteActivity::class.java)
@@ -64,6 +71,12 @@ class MainActivity : AppCompatActivity() {
         }
         val graph = DaggerApplicationComponent.builder().androidModule(AndroidModule(this)).build()
         graph.inject(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val prefs = getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.unregisterOnSharedPreferenceChangeListener(masterPwHashChangedListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

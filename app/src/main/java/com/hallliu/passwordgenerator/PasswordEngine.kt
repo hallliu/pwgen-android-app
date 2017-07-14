@@ -2,9 +2,10 @@ package com.hallliu.passwordgenerator
 
 import java.security.MessageDigest
 
-const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
-const val NUMBERS = "1234567890"
-const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
+private const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
+private const val NUMBERS = "1234567890"
+private const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
+private val HEX_DIGITS = "0123456789abcdef".toCharArray()
 
 data class PasswordSpecification(val siteName: String, val pwLength: Int,
                                  val permittedChars: String, val requiredChars: String = "",
@@ -72,6 +73,26 @@ fun genLowers(length: Int): String {
         result[i] = ((i % 26) + 97).toChar()
     }
     return String(result)
+}
+
+private fun ByteArray.toHex() : String{
+    val result = StringBuffer()
+
+    forEach {
+        val octet = it.toInt()
+        val firstIndex = (octet and 0xF0).ushr(4)
+        val secondIndex = octet and 0x0F
+        result.append(HEX_DIGITS[firstIndex])
+        result.append(HEX_DIGITS[secondIndex])
+    }
+
+    return result.toString()
+}
+
+fun hashMasterPwToHex(password: String): String {
+    val digest = MessageDigest.getInstance("SHA-256")
+    val output = digest.digest(password.toByteArray())
+    return output.toHex()
 }
 
 fun createInitialCharMap(uppers: Boolean, numbers: Boolean, symbols: Boolean): String {

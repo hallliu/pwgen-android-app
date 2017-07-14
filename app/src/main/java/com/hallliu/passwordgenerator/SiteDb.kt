@@ -5,6 +5,9 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import javax.inject.Inject
 
+const val SHARED_PREFS_NAME = "prefs"
+const val MASTER_PW_HASH_KEY = "masterPwHash"
+
 const val TABLE_NAME = "site_table"
 const val COLUMN_ID = "_id"
 // site name, e.g. www.facebook.com. string
