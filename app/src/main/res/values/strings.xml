@@ -2,6 +2,10 @@
     <string name="app_name">Password Generator</string>
     <string name="action_settings">Settings</string>
     <string name="master_pw_hint">Master Password</string>
+    <string name="confirm_master_pw_hint">Confirm new password</string>
+    <string name="password_incorrect">Incorrect Password</string>
+    <string name="password_mismatch">Passwords do not match</string>
+    <string name="set_master_pw_title">Set master password</string>
     <string name="site_filter">Site Filter</string>
     <string name="site_name_field_hint">Site Name</string>
     <string name="uppercase_switch_label">Use Uppercase</string>

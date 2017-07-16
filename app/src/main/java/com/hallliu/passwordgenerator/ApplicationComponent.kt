@@ -7,4 +7,5 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AndroidModule::class))
 interface ApplicationComponent {
     fun inject(mainActivity: MainActivity)
+    fun getSetMasterPwDialogFragment(): SetMasterPwDialogFragment
 }
