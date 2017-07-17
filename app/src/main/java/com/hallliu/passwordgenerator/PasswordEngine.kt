@@ -1,21 +1,20 @@
 package com.hallliu.passwordgenerator
 
 import java.security.MessageDigest
+import java.util.regex.Pattern
 
 private const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 private const val NUMBERS = "1234567890"
 private const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
+private const val MAX_ITERATIONS = 1 shl 20
 private val HEX_DIGITS = "0123456789abcdef".toCharArray()
 
 data class PasswordSpecification(val siteName: String, val pwLength: Int,
-                                 val permittedChars: String, val requiredChars: String = "",
-                                 val pwVersion: Int) {
-    init {
-        if (!requiredChars.all { permittedChars.contains(it) }) {
-            throw IllegalArgumentException("Required chars must be permitted")
-        }
-    }
-}
+                                 val permittedChars: String,
+                                 val requirements: List<Pattern> = emptyList(),
+                                 val pwVersion: Int)
+
+class PasswordMisspecificationException : Exception()
 
 fun generatePw(spec: PasswordSpecification, masterPw: String): String {
     val siteBase = masterPw + spec.siteName
@@ -24,7 +23,7 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
     var versionCounter = 0
     var iterationCounter = 0
 
-    while (true) {
+    while (iterationCounter < MAX_ITERATIONS) {
         // Compatibility with old system -- don't tack on a postfix unless version > 1 or
         // requirements not met.
         val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
@@ -33,7 +32,7 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
         val output = digest.digest((siteBase + postfix).toByteArray())
 
         val potentialPassword = encodeToBase64(output, byteMap).substring(0 until spec.pwLength)
-        if (spec.requiredChars.all { potentialPassword.contains(it) }) {
+        if (spec.requirements.all { it.matcher(potentialPassword).find() }) {
             versionCounter++
             if (versionCounter >= spec.pwVersion) {
                 return potentialPassword
@@ -41,6 +40,7 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
         }
         iterationCounter++
     }
+    throw PasswordMisspecificationException()
 }
 
 fun encodeToBase64(bytes: ByteArray, map: ByteArray): String {
