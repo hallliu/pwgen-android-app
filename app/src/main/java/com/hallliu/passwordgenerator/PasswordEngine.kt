@@ -3,9 +3,9 @@ package com.hallliu.passwordgenerator
 import java.security.MessageDigest
 import java.util.regex.Pattern
 
-private const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
-private const val NUMBERS = "1234567890"
-private const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
+const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
+const val NUMBERS = "1234567890"
+const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
 private const val MAX_ITERATIONS = 1 shl 20
 private val HEX_DIGITS = "0123456789abcdef".toCharArray()
 
@@ -46,9 +46,9 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
 fun encodeToBase64(bytes: ByteArray, map: ByteArray): String {
     val base64Chars = mutableListOf<Byte>()
     for (i in 0 until bytes.size step 3) {
-        val byte1 = bytes[i].toInt()
-        val byte2 = if (i < bytes.size - 1) bytes[i + 1].toInt() else 0
-        val byte3 = if (i < bytes.size - 2) bytes[i + 2].toInt() else 0
+        val byte1 = bytes[i].toInt() and 0xFF
+        val byte2 = if (i < bytes.size - 1) bytes[i + 1].toInt() and 0xFF else 0
+        val byte3 = if (i < bytes.size - 2) bytes[i + 2].toInt() and 0xFF else 0
 
         val triplet = (byte1 shl 16) or (byte2 shl 8) or byte3
 
@@ -93,18 +93,4 @@ fun hashMasterPwToHex(password: String): String {
     val digest = MessageDigest.getInstance("SHA-256")
     val output = digest.digest(password.toByteArray())
     return output.toHex()
-}
-
-fun createInitialCharMap(uppers: Boolean, numbers: Boolean, symbols: Boolean): String {
-    var result : String = ""
-    if (uppers) {
-        result += UPPERS
-    }
-    if (numbers) {
-        result += NUMBERS
-    }
-    if (symbols) {
-        result += SYMBOLS
-    }
-    return result
 }
