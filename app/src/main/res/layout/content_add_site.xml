@@ -66,10 +66,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numbersSwitch"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/saveSiteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_site_button_label"
@@ -80,5 +80,48 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="4dp"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintTop_toBottomOf="@+id/symbolsSwitch" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        android:layout_marginTop="8dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <TextView
+        android:id="@+id/requirementsEditTextLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/requirementsRegexEditText"
+        android:text="@string/requirements_edittext_label"
+        app:layout_constraintBottom_toTopOf="@+id/requirementsRegexEditText"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/requirementsRegexEditText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:inputType="text|textNoSuggestions|textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:gravity="top"
+        app:layout_constraintTop_toBottomOf="@+id/requirementsEditTextLabel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/guideline3"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,8 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = arrayOf(AndroidModule::class))
 interface ApplicationComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(activity: MainActivity)
+    fun inject(activity: AddSiteActivity)
     fun getSetMasterPwDialogFragment(): SetMasterPwDialogFragment
+    fun getEditIncludedSymbolsDialogFragment(): EditIncludedSymbolsDialogFragment
 }

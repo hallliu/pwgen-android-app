@@ -11,6 +11,8 @@
     <string name="uppercase_switch_label">Use Uppercase</string>
     <string name="numbers_switch_label">Use Numbers</string>
     <string name="symbols_switch_label">Use Symbols (long-press to edit)</string>
+    <string name="requirements_edittext_label">Password requirements (regex, one per line)</string>
+    <string name="edit_pw_symbols_title">Edit symbols</string>
     <string name="save_site_button_label">Save Site</string>
     <string name="copy_password_button_text">Copy</string>
 </resources>

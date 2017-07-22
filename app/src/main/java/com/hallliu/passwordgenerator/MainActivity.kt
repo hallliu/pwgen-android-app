@@ -14,9 +14,11 @@ import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        lateinit var depGraph: ApplicationComponent
+    }
 
     @Inject lateinit var masterPwManager: MasterPasswordManager
-    private lateinit var depGraph: ApplicationComponent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

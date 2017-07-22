@@ -37,7 +37,7 @@ class SiteDbHelper @Inject constructor(context: Context) : SQLiteOpenHelper(cont
                 |CREATE TABLE $MAIN_TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY,
                 | $COLUMN_SITE_NAME TEXT UNIQUE,
                 | $COLUMN_PASSWORD_LENGTH INTEGER, $COLUMN_PERMITTED_CHARS TEXT,
-                | $COLUMN_VERSION INTEGER, $COLUMN_LAST_MODIFIED INTEGER""".trimMargin())
+                | $COLUMN_VERSION INTEGER, $COLUMN_LAST_MODIFIED INTEGER)""".trimMargin())
         db.execSQL("""
                 | CREATE TABLE $PATTERNS_TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY,
                 | $COLUMN_PATTERN TEXT,
