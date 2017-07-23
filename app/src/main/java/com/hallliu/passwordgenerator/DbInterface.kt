@@ -33,6 +33,22 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
     fun Cursor.getIntByName(name: String): Int =
             this.getInt(this.getColumnIndex(name))
 
+    fun getSitesLike(site: String, callback: (result: List<String>) -> Unit) {
+        handler.post {
+            val queryColumns = arrayOf(COLUMN_SITE_NAME)
+            val whereClause = "$COLUMN_SITE_NAME LIKE ?"
+            val whereArgs = arrayOf("%$site%")
+            db.query(MAIN_TABLE_NAME, queryColumns, whereClause,
+                    whereArgs, null, null, null).use { cursor ->
+                val sites = mutableListOf<String>()
+                while (cursor.moveToNext()) {
+                    sites.add(cursor.getStringByName(COLUMN_SITE_NAME))
+                }
+                callback(sites)
+            }
+        }
+    }
+
     fun getPwSpecForSite(site: String, callback: (result: PasswordSpecification?) -> Unit) {
         handler.post {
             val columns = arrayOf(COLUMN_ID, COLUMN_SITE_NAME, COLUMN_PERMITTED_CHARS,

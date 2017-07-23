@@ -24,6 +24,7 @@
             android:id="@+id/siteNameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textNoSuggestions"
             android:hint="@string/site_name_field_hint" />
     </android.support.design.widget.TextInputLayout>
 

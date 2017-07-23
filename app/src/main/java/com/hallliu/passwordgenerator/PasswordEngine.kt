@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 const val UPPERS = "QWERTYUIOPASDFGHJKLZXCVBNM"
 const val NUMBERS = "1234567890"
 const val SYMBOLS = "!@#\$%^&*()~`{}[];:<>,.?/"
-private const val MAX_ITERATIONS = 1 shl 20
+private const val MAX_ITERATIONS_PER_VERSION = 1 shl 10
 private val HEX_DIGITS = "0123456789abcdef".toCharArray()
 
 data class PasswordSpecification(val siteName: String, val pwLength: Int,
@@ -22,8 +22,9 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
 
     var versionCounter = 0
     var iterationCounter = 0
+    var itersPerVersion = 0
 
-    while (iterationCounter < MAX_ITERATIONS) {
+    while (itersPerVersion < MAX_ITERATIONS_PER_VERSION) {
         // Compatibility with old system -- don't tack on a postfix unless version > 1 or
         // requirements not met.
         val postfix = if (iterationCounter > 0) iterationCounter.toString() else ""
@@ -34,11 +35,13 @@ fun generatePw(spec: PasswordSpecification, masterPw: String): String {
         val potentialPassword = encodeToBase64(output, byteMap).substring(0 until spec.pwLength)
         if (spec.requirements.all { it.matcher(potentialPassword).find() }) {
             versionCounter++
+            itersPerVersion = 0
             if (versionCounter >= spec.pwVersion) {
                 return potentialPassword
             }
         }
         iterationCounter++
+        itersPerVersion++
     }
     throw PasswordMisspecificationException()
 }

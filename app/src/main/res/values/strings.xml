@@ -15,4 +15,7 @@
     <string name="edit_pw_symbols_title">Edit symbols</string>
     <string name="save_site_button_label">Save Site</string>
     <string name="copy_password_button_text">Copy</string>
+    <string name="select_site_prompt">Select a site to generate password</string>
+    <string name="master_pw_is_wrong">Master password is incorrect</string>
+    <string name="bad_pw_spec">Bad password specification</string>
 </resources>

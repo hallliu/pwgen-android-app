@@ -10,10 +10,9 @@ private const val MASTER_PW_HASH_KEY = "masterPwHash"
 
 @Singleton
 class MasterPasswordManager @Inject constructor(val context: Context) {
-    private var masterPasswordHash: String? = null
-
     private val prefs: SharedPreferences =
             context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+    private var masterPasswordHash: String? = prefs.getString(MASTER_PW_HASH_KEY, null)
 
     private val masterPwHashChangedListener = SharedPreferences.OnSharedPreferenceChangeListener {
         sharedPreferences, key ->

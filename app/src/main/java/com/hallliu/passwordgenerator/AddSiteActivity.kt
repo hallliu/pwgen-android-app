@@ -22,11 +22,12 @@ class AddSiteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_site)
         setSupportActionBar(toolbar)
-        val depGraph = DaggerApplicationComponent.builder().androidModule(AndroidModule(this)).build()
+        val depGraph = DaggerApplicationComponent.builder()
+                .androidModule(AndroidModule(this)).build()
         depGraph.inject(this)
 
         symbolsSwitch.setOnLongClickListener {
-            val frag = MainActivity.depGraph.getEditIncludedSymbolsDialogFragment()
+            val frag = depGraph.getEditIncludedSymbolsDialogFragment()
             val args = Bundle()
             args.putString(EditIncludedSymbolsDialogFragment.EXTRA_INITIAL_SYMBOLS, allowedSymbols)
             frag.arguments = args

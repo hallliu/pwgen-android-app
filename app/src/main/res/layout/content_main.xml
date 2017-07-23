@@ -43,9 +43,10 @@
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@+id/masterPwContainer"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintBottom_toTopOf="@+id/spinner">
+        app:layout_constraintBottom_toTopOf="@+id/siteSelectionSpinner">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/siteFilterEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textNoSuggestions"
@@ -53,7 +54,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/siteSelectionSpinner"
         android:layout_width="match_parent"
         android:layout_height="21dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,8 +67,8 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/passwordField"
-        android:text="aaabbbcccdde"
+        android:id="@+id/passwordTextView"
+        android:text="@string/select_site_prompt"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
@@ -90,7 +91,7 @@
         tools:layout_editor_absoluteX="283dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toEndOf="@+id/passwordField"
+        app:layout_constraintStart_toEndOf="@+id/passwordTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent" />
 
