@@ -1,7 +1,9 @@
 package com.hallliu.passwordgenerator
 
+import android.app.SearchManager
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -13,9 +15,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +30,9 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var masterPwManager: MasterPasswordManager
     @Inject lateinit var dbInterface: DbInterface
     @Inject lateinit var clipboardManager: ClipboardManager
+    @Inject lateinit var searchManager: SearchManager
     var hasValidPassword = false
+    var hasFocus = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,20 +99,32 @@ class MainActivity : AppCompatActivity() {
         }
 
         siteFilterEditText.addTextChangedListener(object : TextWatcher {
+            var siteNames: MutableList<String> = mutableListOf()
+
             override fun afterTextChanged(s: Editable?) { }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
+                    siteNames.clear()
                     return
                 }
-                dbInterface.getSitesLike(s.toString()) { result ->
-                    runOnUiThread {
-                        siteNameAdapter.clear()
-                        siteNameAdapter.addAll(result)
-                        siteNameAdapter.sort { s1, s2 -> s1.compareTo(s2) }
+                val filterString = s.toString()
+                if (siteNames.isEmpty()) {
+                    dbInterface.getSitesLike(filterString) { result ->
+                        runOnUiThread {
+                            result.mapTo(siteNames, {it})
+                            siteNameAdapter.clear()
+                            siteNameAdapter.addAll(result)
+                            siteNameAdapter.sort { s1, s2 -> s1.compareTo(s2) }
+                        }
                     }
+                } else {
+                    siteNameAdapter.clear()
+                    siteNameAdapter.addAll(
+                            siteNames.filter { Pattern.matches(".*$filterString.*", it) })
+                    siteNameAdapter.sort { s1, s2 -> s1.compareTo(s2) }
                 }
             }
         })
@@ -121,11 +139,17 @@ class MainActivity : AppCompatActivity() {
             intent.setClass(this@MainActivity, AddSiteActivity::class.java)
             startActivity(intent)
         }
+
+        hasFocus = true
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val searchView = menu.findItem(R.id.action_search_sites).actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(
+                ComponentName(this, SearchSitesActivity::class.java)))
         return true
     }
 
@@ -134,9 +158,14 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_search_sites -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hasFocus = false
     }
 
     private fun getMasterPassword(): String {

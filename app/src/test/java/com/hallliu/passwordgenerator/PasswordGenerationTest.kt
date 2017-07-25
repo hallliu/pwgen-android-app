@@ -54,10 +54,10 @@ class PasswordGenerationTest {
                 siteName = "www.example1.com",
                 pwLength = 32,
                 permittedChars = UPPERS + NUMBERS,
-                requirements = listOf(Pattern.compile("FA$")),
+                requirements = listOf(Pattern.compile("F$")),
                 pwVersion = 1)
         for (i in 1..10) {
-            Assert.assertTrue(generatePw(spec.copy(pwVersion = i), masterPw).endsWith("FA"))
+            Assert.assertTrue(generatePw(spec.copy(pwVersion = i), masterPw).endsWith("F"))
         }
     }
 
