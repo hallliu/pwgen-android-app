@@ -22,8 +22,7 @@ class AddSiteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_site)
         setSupportActionBar(toolbar)
-        val depGraph = DaggerApplicationComponent.builder()
-                .androidModule(AndroidModule(this)).build()
+        val depGraph = (application as PasswordGeneratorApp).depGraph
         depGraph.inject(this)
 
         symbolsSwitch.setOnLongClickListener {

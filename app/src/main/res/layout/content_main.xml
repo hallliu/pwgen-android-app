@@ -1,104 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.hallliu.passwordgenerator.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:baselineAligned="false">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/masterPwContainer"
+    <fragment android:name="com.hallliu.passwordgenerator.PasswordGenerationFragment"
+        android:id="@+id/generatorFragment"
+        android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/siteFilterField"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:passwordToggleEnabled="true"
-        app:errorEnabled="true"
-        tools:layout_editor_absoluteY="65dp">
-
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/masterPasswordEditText"
-            android:hint="@string/master_pw_hint"
-            android:inputType="textPassword" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        app:passwordToggleEnabled="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/siteFilterField"
-        tools:layout_editor_absoluteY="123dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/masterPwContainer"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintBottom_toTopOf="@+id/siteSelectionSpinner">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/siteFilterEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textNoSuggestions"
-            android:hint="@string/search_sites" />
-    </android.support.design.widget.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/siteSelectionSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="21dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/siteFilterField"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/passwordTextView"
-        android:text="@string/select_site_prompt"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintEnd_toStartOf="@+id/copyPasswordButton"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintBaseline_toBaselineOf="@+id/copyPasswordButton" />
-
-    <Button
-        android:id="@+id/copyPasswordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/copy_password_button_text"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        tools:layout_editor_absoluteX="283dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toEndOf="@+id/passwordTextView"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_height="match_parent" />
+</LinearLayout>
