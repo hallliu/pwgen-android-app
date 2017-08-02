@@ -12,4 +12,6 @@ interface ApplicationComponent {
     fun inject(pwgenFragment: PasswordGenerationFragment)
     fun getSetMasterPwDialogFragment(): SetMasterPwDialogFragment
     fun getEditIncludedSymbolsDialogFragment(): EditIncludedSymbolsDialogFragment
+    fun getSearchSitesFragment(): SearchSitesFragment
+    fun getPasswordGenerationFragment(): PasswordGenerationFragment
 }

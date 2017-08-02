@@ -13,6 +13,7 @@ class MasterPasswordManager @Inject constructor(val context: Context) {
     private val prefs: SharedPreferences =
             context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
     private var masterPasswordHash: String? = prefs.getString(MASTER_PW_HASH_KEY, null)
+    var masterPassword: String = ""
 
     private val masterPwHashChangedListener = SharedPreferences.OnSharedPreferenceChangeListener {
         sharedPreferences, key ->

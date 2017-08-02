@@ -32,6 +32,7 @@ class SetMasterPwDialogFragment @Inject constructor() : DialogFragment() {
                     } else {
                         masterPwManager.setMasterPwHash(
                                 hashMasterPwToHex(setMasterPwEditText.text.toString()))
+                        masterPwManager.masterPassword = setMasterPwEditText.text.toString()
                         this@SetMasterPwDialogFragment.dialog.dismiss()
                     }
                 }

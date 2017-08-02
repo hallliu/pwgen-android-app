@@ -9,6 +9,12 @@ import java.util.regex.Pattern
 import java.util.regex.PatternSyntaxException
 import javax.inject.Inject
 
+fun Cursor.getStringByName(name: String): String =
+        this.getString(this.getColumnIndex(name))
+
+fun Cursor.getIntByName(name: String): Int =
+        this.getInt(this.getColumnIndex(name))
+
 class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
     private val handler: Handler
     private val handlerThread = HandlerThread(this.javaClass.simpleName)
@@ -27,22 +33,21 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
         }
     }
 
-    fun Cursor.getStringByName(name: String): String =
-            this.getString(this.getColumnIndex(name))
-
-    fun Cursor.getIntByName(name: String): Int =
-            this.getInt(this.getColumnIndex(name))
-
     fun getSitesLike(site: String, callback: (result: List<String>) -> Unit) {
+        getSitesLike(site, arrayOf(COLUMN_SITE_NAME),
+                {it.getStringByName(COLUMN_SITE_NAME)}, callback)
+    }
+
+    fun <T> getSitesLike(site: String, columns: Array<String>,
+                         factory: (cursor: Cursor) -> T, callback: (result: List<T>) -> Unit) {
         handler.post {
-            val queryColumns = arrayOf(COLUMN_SITE_NAME)
             val whereClause = "$COLUMN_SITE_NAME LIKE ?"
             val whereArgs = arrayOf("%$site%")
-            db.query(MAIN_TABLE_NAME, queryColumns, whereClause,
+            db.query(MAIN_TABLE_NAME, columns, whereClause,
                     whereArgs, null, null, null).use { cursor ->
-                val sites = mutableListOf<String>()
+                val sites = mutableListOf<T>()
                 while (cursor.moveToNext()) {
-                    sites.add(cursor.getStringByName(COLUMN_SITE_NAME))
+                    sites.add(factory(cursor))
                 }
                 callback(sites)
             }

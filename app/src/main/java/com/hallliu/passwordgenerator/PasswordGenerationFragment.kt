@@ -1,7 +1,6 @@
 package com.hallliu.passwordgenerator
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.app.Fragment
 import android.content.ClipData
@@ -14,23 +13,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import javax.inject.Inject
 
 import kotlinx.android.synthetic.main.fragment_password_generation.*
 import java.util.regex.Pattern
 
-class PasswordGenerationFragment : Fragment() {
+class PasswordGenerationFragment @Inject constructor() : Fragment() {
+
+    companion object {
+        const val FRAGMENT_TAG = "PasswordGenerationFragment"
+    }
 
     @Inject lateinit var masterPwManager: MasterPasswordManager
     @Inject lateinit var dbInterface: DbInterface
     @Inject lateinit var clipboardManager: ClipboardManager
-    var hasValidPassword = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity.application as PasswordGeneratorApp).depGraph.inject(this)
-        if (arguments != null) {
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,7 @@ class PasswordGenerationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_password_generation, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         masterPasswordEditText.addTextChangedListener(object : TextWatcher {
@@ -50,11 +50,12 @@ class PasswordGenerationFragment : Fragment() {
                 val hashOfContent = hashMasterPwToHex(s.toString())
 
                 if (hashOfContent == masterPwManager.getMasterPwHash()) {
+                    getView()
                     masterPwContainer.error = null
-                    hasValidPassword = true
+                    masterPwManager.masterPassword = s.toString()
                 } else {
                     masterPwContainer.error = getString(R.string.password_incorrect)
-                    hasValidPassword = false
+                    masterPwManager.masterPassword = ""
                 }
             }
         })
@@ -68,6 +69,8 @@ class PasswordGenerationFragment : Fragment() {
             false
         }
 
+        masterPasswordEditText.setText(masterPwManager.masterPassword)
+
         val siteNameAdapter = ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item)
         siteNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         siteSelectionSpinner.adapter = siteNameAdapter
@@ -79,17 +82,18 @@ class PasswordGenerationFragment : Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int,
                                         id: Long) {
-                if (!hasValidPassword) {
+                if (masterPwManager.masterPassword.isNullOrEmpty()) {
                     passwordTextView.setText(R.string.master_pw_is_wrong)
                     return
                 }
                 val siteName = siteNameAdapter.getItem(position)
                 dbInterface.getPwSpecForSite(siteName) { result ->
                     activity.runOnUiThread {
+                        getView()
                         passwordTextView.text = when (result) {
                             null -> getString(R.string.select_site_prompt)
                             else -> try {
-                                generatePw(result, getMasterPassword())
+                                generatePw(result, masterPwManager.masterPassword)
                             } catch (e: PasswordMisspecificationException) {
                                 getString(R.string.bad_pw_spec)
                             }
@@ -136,15 +140,15 @@ class PasswordGenerationFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
 
     override fun onDetach() {
         super.onDetach()
-    }
-
-    private fun getMasterPassword(): String {
-        return masterPasswordEditText.text.toString()
     }
 }
