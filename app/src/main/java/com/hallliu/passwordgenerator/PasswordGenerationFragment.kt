@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.app.Fragment
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.support.annotation.UiThread
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -13,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import javax.inject.Inject
 
 import kotlinx.android.synthetic.main.fragment_password_generation.*
@@ -82,31 +82,16 @@ class PasswordGenerationFragment @Inject constructor() : Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int,
                                         id: Long) {
-                if (masterPwManager.masterPassword.isNullOrEmpty()) {
-                    passwordTextView.setText(R.string.master_pw_is_wrong)
-                    return
-                }
-                val siteName = siteNameAdapter.getItem(position)
-                dbInterface.getPwSpecForSite(siteName) { result ->
-                    activity.runOnUiThread {
-                        getView()
-                        passwordTextView.text = when (result) {
-                            null -> getString(R.string.select_site_prompt)
-                            else -> try {
-                                generatePw(result, masterPwManager.masterPassword)
-                            } catch (e: PasswordMisspecificationException) {
-                                getString(R.string.bad_pw_spec)
-                            }
-                        }
-                    }
-                }
+                refreshPasswordDisplay()
             }
         }
 
         siteFilterEditText.addTextChangedListener(object : TextWatcher {
             var siteNames: MutableList<String> = mutableListOf()
 
-            override fun afterTextChanged(s: Editable?) { }
+            override fun afterTextChanged(s: Editable?) {
+                refreshPasswordDisplay()
+            }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
@@ -131,12 +116,41 @@ class PasswordGenerationFragment @Inject constructor() : Fragment() {
                             siteNames.filter { Pattern.matches(".*$filterString.*", it) })
                     siteNameAdapter.sort { s1, s2 -> s1.compareTo(s2) }
                 }
+                siteSelectionSpinner.setSelection(0)
             }
         })
 
         copyPasswordButton.setOnClickListener { _ ->
             val clipData = ClipData.newPlainText("copied_password", passwordTextView.text)
             clipboardManager.primaryClip = clipData
+        }
+    }
+
+    @UiThread
+    private fun refreshPasswordDisplay() {
+        if (masterPwManager.masterPassword.isNullOrEmpty()) {
+            passwordTextView.setText(R.string.master_pw_is_wrong)
+            return
+        }
+
+        val siteName = siteSelectionSpinner.selectedItem as String?
+        if (siteName == null) {
+            passwordTextView.text = getString(R.string.select_site_prompt)
+            return
+        }
+
+        dbInterface.getPwSpecForSite(siteName) { result ->
+            val text = when (result) {
+                null -> getString(R.string.select_site_prompt)
+                else -> try {
+                    generatePw(result, masterPwManager.masterPassword)
+                } catch (e: PasswordMisspecificationException) {
+                    getString(R.string.bad_pw_spec)
+                }
+            }
+            activity.runOnUiThread {
+                passwordTextView.text = text
+            }
         }
     }
 
