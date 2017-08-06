@@ -2,11 +2,12 @@ package com.hallliu.passwordgenerator
 
 import android.app.ListFragment
 import android.os.Bundle
+import android.widget.SearchView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.ListView
 import android.widget.TextView
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -18,14 +19,14 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
 
     private data class SiteDisplay(val name: String, val chars: String)
 
-    @Inject lateinit var dbInterface: DbInterface
-
     private val knownSites = mutableListOf<SiteDisplay>()
-
+    @Inject lateinit var dbInterface: DbInterface
     private lateinit var adapter: ArrayAdapter<SiteDisplay>
+    private var currentQuery = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         adapter = object : ArrayAdapter<SiteDisplay>(activity, 0) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
                 val display = getItem(position)
@@ -47,7 +48,24 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onListItemClick(l: ListView?, v: View, position: Int, id: Long) {
+        val checkbox = v.findViewById(R.id.siteListItemCheckbox) as CheckBox
+        checkbox.toggle()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_site_list_fragment, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val searchMenuItem = menu.findItem(R.id.action_search_sites)
+        val searchView = searchMenuItem.actionView as SearchView
+        searchView.isIconified = false
+        searchView.setQuery(currentQuery, false)
+    }
+
     fun onQueryUpdated(query: String) {
+        currentQuery = query
         if (query.isNullOrEmpty()) {
             knownSites.clear()
             adapter.clear()

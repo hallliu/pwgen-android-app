@@ -6,6 +6,8 @@
     <string name="password_mismatch">Passwords do not match</string>
     <string name="set_master_pw_title">Set master password</string>
     <string name="search_sites">Search sites</string>
+    <string name="browse_sites">Browse</string>
+    <string name="delete_sites">Delete</string>
     <string name="no_search_results">No sites found</string>
     <string name="site_name_field_hint">Site Name</string>
     <string name="uppercase_switch_label">Use Uppercase</string>
@@ -18,7 +20,4 @@
     <string name="select_site_prompt">Select a site to generate password</string>
     <string name="master_pw_is_wrong">Master password is incorrect</string>
     <string name="bad_pw_spec">Bad password specification</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

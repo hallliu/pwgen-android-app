@@ -9,4 +9,10 @@
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/browseSites"
+        android:orderInCategory="101"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="@string/browse_sites"
+        app:showAsAction="never"/>
 </menu>

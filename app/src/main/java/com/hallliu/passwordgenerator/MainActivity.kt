@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(searchTextListener)
         searchView.layoutParams = ActionBar.LayoutParams(
                 ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT)
+        super.onCreateOptionsMenu(menu)
         return true
     }
 
