@@ -3,15 +3,11 @@ package com.hallliu.passwordgenerator
 import android.app.ActionBar
 import android.app.SearchManager
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.AttributeSet
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.SearchView
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -78,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
 
         fab.setOnClickListener { _ ->
-            val intent = Intent(Intent.ACTION_MAIN)
-            intent.setClass(this@MainActivity, AddSiteActivity::class.java)
+            val intent = Intent(EditSiteActivity.ACTION_ADD_NEW_SITE)
+            intent.setClass(this@MainActivity, EditSiteActivity::class.java)
             startActivity(intent)
         }
     }

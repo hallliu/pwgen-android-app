@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hallliu.passwordgenerator.AddSiteActivity"
-    tools:showIn="@layout/activity_add_site">
+    tools:context="com.hallliu.passwordgenerator.EditSiteActivity"
+    tools:showIn="@layout/activity_edit_site">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/siteNameInputLayout"
@@ -14,11 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/uppercaseSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread">
+        app:layout_constraintVertical_chainStyle="spread"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        android:layout_marginTop="8dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/siteNameEditText"
@@ -30,44 +32,45 @@
 
     <Switch
         android:id="@+id/uppercaseSwitch"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/uppercase_switch_label"
+        android:switchPadding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/numbersSwitch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/siteNameInputLayout"
-        tools:layout_editor_absoluteY="278dp" />
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/passwordLengthLayout"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
 
     <Switch
         android:id="@+id/numbersSwitch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/numbers_switch_label"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:switchPadding="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="333dp"
         app:layout_constraintTop_toBottomOf="@+id/uppercaseSwitch"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintBottom_toTopOf="@+id/symbolsSwitch" />
 
     <Switch
         android:id="@+id/symbolsSwitch"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:switchPadding="8dp"
         android:text="@string/symbols_switch_label"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numbersSwitch"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/passwordVersionLayout"
+        app:layout_constraintHorizontal_chainStyle="spread_inside" />
 
     <Button
         android:id="@+id/saveSiteButton"
@@ -89,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintGuide_percent="0.6" />
 
     <TextView
         android:id="@+id/requirementsEditTextLabel"
@@ -125,4 +128,55 @@
         android:id="@+id/guideline3"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.85" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordLengthLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/uppercaseSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/passwordVersionLayout"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        android:layout_marginTop="8dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/passwordLengthEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="6"
+            android:inputType="number"
+            android:hint="@string/password_length" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/passwordVersionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/symbolsSwitch"
+        android:layout_marginStart="8dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLengthLayout"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/passwordVersionEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="6"
+            android:hint="@string/password_version" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline4"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="531dp" />
 </android.support.constraint.ConstraintLayout>

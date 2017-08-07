@@ -4,6 +4,8 @@
     <string name="confirm_master_pw_hint">Confirm new password</string>
     <string name="password_incorrect">Incorrect Password</string>
     <string name="password_mismatch">Passwords do not match</string>
+    <string name="password_length">Password length</string>
+    <string name="password_version">Version</string>
     <string name="set_master_pw_title">Set master password</string>
     <string name="search_sites">Search sites</string>
     <string name="browse_sites">Browse</string>

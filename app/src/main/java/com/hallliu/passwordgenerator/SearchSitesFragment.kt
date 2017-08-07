@@ -1,14 +1,11 @@
 package com.hallliu.passwordgenerator
 
 import android.app.ListFragment
+import android.content.Intent
 import android.os.Bundle
-import android.widget.SearchView
 import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -20,6 +17,7 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
     private data class SiteDisplay(val name: String, val chars: String)
 
     private val knownSites = mutableListOf<SiteDisplay>()
+    private val selectedSites = mutableSetOf<String>()
     @Inject lateinit var dbInterface: DbInterface
     private lateinit var adapter: ArrayAdapter<SiteDisplay>
     private var currentQuery = ""
@@ -36,6 +34,14 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
                 val siteCharsField = view.findViewById(R.id.sitePwCharsInList) as TextView
                 siteNameField.text = display.name
                 siteCharsField.text = display.chars
+
+                view.setOnLongClickListener { _ ->
+                    val intent = Intent(EditSiteActivity.ACTION_EDIT_SITE)
+                    intent.putExtra(EditSiteActivity.EXTRA_SITE_NAME, display.name)
+                    intent.setClass(activity, EditSiteActivity::class.java)
+                    activity.startActivity(intent)
+                    true
+                }
                 return view
             }
         }
@@ -51,6 +57,12 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
     override fun onListItemClick(l: ListView?, v: View, position: Int, id: Long) {
         val checkbox = v.findViewById(R.id.siteListItemCheckbox) as CheckBox
         checkbox.toggle()
+        val clickedSiteName = (listAdapter.getItem(position) as SiteDisplay).name
+        if (checkbox.isChecked) {
+            selectedSites.add(clickedSiteName)
+        } else {
+            selectedSites.remove(clickedSiteName)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -62,6 +74,19 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
         val searchView = searchMenuItem.actionView as SearchView
         searchView.isIconified = false
         searchView.setQuery(currentQuery, false)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.deleteSites -> dbInterface.deleteSites(selectedSites) { numSites ->
+                activity.runOnUiThread {
+                    Toast.makeText(activity, "$numSites sites deleted", Toast.LENGTH_SHORT).show()
+                    knownSites.clear()
+                    onQueryUpdated(currentQuery)
+                }
+            }
+        }
+        return true
     }
 
     fun onQueryUpdated(query: String) {

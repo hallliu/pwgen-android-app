@@ -97,6 +97,26 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
         return patterns
     }
 
+    fun deleteSites(sites: Collection<String>, callback: (Int) -> Unit) {
+        handler.post {
+            val columns = arrayOf(COLUMN_ID)
+            val whereClause = COLUMN_SITE_NAME + " = ?"
+            val whereArgs = sites.toTypedArray()
+            db.query(MAIN_TABLE_NAME, columns, whereClause, whereArgs, null, null, null)
+                    .use { cursor ->
+                        val ids = (1..cursor.count).map {
+                            cursor.moveToNext()
+                            cursor.getIntByName(COLUMN_ID).toString()
+                        }.toTypedArray()
+                        val deleteWhereMain = COLUMN_ID + " = ?"
+                        val deleteWhereRequirements = COLUMN_SITE_ID + " = ?"
+                        val numSites = db.delete(MAIN_TABLE_NAME, deleteWhereMain, ids)
+                        db.delete(PATTERNS_TABLE_NAME, deleteWhereRequirements, ids)
+                        callback(numSites)
+            }
+        }
+    }
+
     fun saveSiteInDb(pwSpec: PasswordSpecification, callback: (DbUpdateResult) -> Unit) {
         handler.post {
             // Check for existing site first
