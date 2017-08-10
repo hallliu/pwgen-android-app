@@ -32,15 +32,24 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
                         .inflate(R.layout.site_search_list_item, parent, false)
                 val siteNameField = view.findViewById(R.id.siteNameInList) as TextView
                 val siteCharsField = view.findViewById(R.id.sitePwCharsInList) as TextView
+                val checkBoxField = view.findViewById(R.id.siteListItemCheckbox) as CheckBox
                 siteNameField.text = display.name
                 siteCharsField.text = display.chars
+                checkBoxField.isChecked = false
 
                 view.setOnLongClickListener { _ ->
-                    val intent = Intent(EditSiteActivity.ACTION_EDIT_SITE)
-                    intent.putExtra(EditSiteActivity.EXTRA_SITE_NAME, display.name)
+                    val intent = Intent(EditSiteActivityBase.ACTION_EDIT_SITE)
+                    intent.putExtra(EditSiteActivityBase.EXTRA_SITE_NAME, display.name)
                     intent.setClass(activity, EditSiteActivity::class.java)
                     activity.startActivity(intent)
                     true
+                }
+
+                checkBoxField.setOnCheckedChangeListener { _, isChecked ->
+                    when (isChecked) {
+                        true -> selectedSites.add(display.name)
+                        false -> selectedSites.remove(display.name)
+                    }
                 }
                 return view
             }

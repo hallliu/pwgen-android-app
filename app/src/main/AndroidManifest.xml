@@ -26,11 +26,20 @@
                 android:resource="@xml/searchable_sites"/>
         </activity>
         <activity
-            android:name=".EditSiteActivity"
+            android:name=".AddSiteActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateUnchanged">
             <intent-filter>
                 <action android:name="com.hallliu.passwordgenerator.ACTION_ADD_NEW_SITE"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".EditSiteActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateUnchanged">
+            <intent-filter>
+                <action android:name="com.hallliu.passwordgenerator.ACTION_EDIT_SITE"/>
             </intent-filter>
         </activity>
     </application>

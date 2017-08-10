@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hallliu.passwordgenerator.EditSiteActivity"
+    tools:context="com.hallliu.passwordgenerator.EditSiteActivityBase"
     tools:showIn="@layout/activity_edit_site">
 
     <android.support.design.widget.TextInputLayout

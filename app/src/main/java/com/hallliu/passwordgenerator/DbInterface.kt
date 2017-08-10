@@ -28,8 +28,11 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
     }
 
     companion object {
-        enum class DbUpdateResult {
+        enum class SaveSiteResult {
             SUCCESS, ALREADY_EXISTS, OTHER_ERROR
+        }
+        enum class UpdateSiteResult {
+            SUCCESS, NO_SUCH_SITE, OTHER_ERROR
         }
     }
 
@@ -117,7 +120,23 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
         }
     }
 
-    fun saveSiteInDb(pwSpec: PasswordSpecification, callback: (DbUpdateResult) -> Unit) {
+    fun updateSiteInDb(pwSpec: PasswordSpecification, callback: (UpdateSiteResult) -> Unit) {
+        deleteSites(listOf(pwSpec.siteName)) {
+            when(it) {
+                0 -> callback(UpdateSiteResult.NO_SUCH_SITE)
+                else -> {
+                    saveSiteInDb(pwSpec) {
+                        callback(when(it) {
+                            SaveSiteResult.SUCCESS -> UpdateSiteResult.SUCCESS
+                            else -> UpdateSiteResult.OTHER_ERROR
+                        })
+                    }
+                }
+            }
+        }
+    }
+
+    fun saveSiteInDb(pwSpec: PasswordSpecification, callback: (SaveSiteResult) -> Unit) {
         handler.post {
             // Check for existing site first
             db.query(MAIN_TABLE_NAME,
@@ -126,7 +145,7 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
                     arrayOf(pwSpec.siteName),
                     null, null, null).use { cursor ->
                 if (cursor.count > 0) {
-                    callback(DbUpdateResult.ALREADY_EXISTS)
+                    callback(SaveSiteResult.ALREADY_EXISTS)
                     return@post
                 }
                 val mainTableValues = ContentValues()
@@ -139,7 +158,7 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
                 try {
                     val row = db.insert(MAIN_TABLE_NAME, null, mainTableValues)
                     if (row == -1L) {
-                        callback(DbUpdateResult.OTHER_ERROR)
+                        callback(SaveSiteResult.OTHER_ERROR)
                         return@post
                     }
 
@@ -148,11 +167,11 @@ class DbInterface @Inject constructor(val dbHelper: SiteDbHelper) {
                         requirementTableValues.put(COLUMN_SITE_ID, row)
                         requirementTableValues.put(COLUMN_PATTERN, it.toString())
                         if (db.insert(PATTERNS_TABLE_NAME, null, requirementTableValues) == -1L) {
-                            callback(DbUpdateResult.OTHER_ERROR)
+                            callback(SaveSiteResult.OTHER_ERROR)
                             return@post
                         }
                     }
-                    callback(DbUpdateResult.SUCCESS)
+                    callback(SaveSiteResult.SUCCESS)
                     db.setTransactionSuccessful()
                 } finally {
                     db.endTransaction()

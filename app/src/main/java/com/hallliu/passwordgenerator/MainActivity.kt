@@ -74,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         transaction.commit()
 
         fab.setOnClickListener { _ ->
-            val intent = Intent(EditSiteActivity.ACTION_ADD_NEW_SITE)
-            intent.setClass(this@MainActivity, EditSiteActivity::class.java)
+            val intent = Intent(EditSiteActivityBase.ACTION_ADD_NEW_SITE)
+            intent.setClass(this@MainActivity, AddSiteActivity::class.java)
             startActivity(intent)
         }
     }

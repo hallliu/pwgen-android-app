@@ -25,7 +25,8 @@ class EditIncludedSymbolsDialogFragment @Inject constructor() : DialogFragment()
         val dialog = builder.setView(symbolsEditText)
                 .setTitle(R.string.edit_pw_symbols_title)
                 .setPositiveButton(android.R.string.ok) { _, _ ->
-                    (activity as EditSiteActivity).allowedSymbols = symbolsEditText.text.toString()
+                    (activity as EditSiteActivityBase).allowedSymbols =
+                            symbolsEditText.text.toString()
                 }
                 .create()
 

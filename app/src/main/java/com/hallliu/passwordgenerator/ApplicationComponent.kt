@@ -8,6 +8,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(app: PasswordGeneratorApp)
     fun inject(activity: MainActivity)
+    fun inject(activity: AddSiteActivity)
     fun inject(activity: EditSiteActivity)
     fun inject(pwgenFragment: PasswordGenerationFragment)
     fun getSetMasterPwDialogFragment(): SetMasterPwDialogFragment
