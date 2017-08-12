@@ -59,8 +59,10 @@ class EditSiteActivity: EditSiteActivityBase() {
                 }
                 return@getPwSpecForSite
             }
+            val symbols = extractSymbolsFromPermittedChars(passwordSpec.permittedChars)
             runOnUiThread {
-                val symbols = extractSymbolsFromPermittedChars(passwordSpec.permittedChars)
+                siteNameEditText.setText(siteName)
+                siteNameEditText.isEnabled = false
                 uppercaseSwitch.isChecked = passwordSpec.permittedChars.contains(UPPERS)
                 numbersSwitch.isChecked = passwordSpec.permittedChars.contains(NUMBERS)
                 symbolsSwitch.isChecked = !symbols.isEmpty()

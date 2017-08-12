@@ -60,12 +60,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // TODO: check intent to see whether it's a search intent
+        val injector = (application as PasswordGeneratorApp).depGraph
+        injector.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        val injector = (application as PasswordGeneratorApp).depGraph
-        injector.inject(this)
 
         val transaction = fragmentManager.beginTransaction()
         val pwgenFragment = injector.getPasswordGenerationFragment()

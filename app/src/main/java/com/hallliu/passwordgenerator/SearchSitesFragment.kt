@@ -3,7 +3,6 @@ package com.hallliu.passwordgenerator
 import android.app.ListFragment
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.*
 import java.util.regex.Pattern
@@ -37,14 +36,6 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
                 siteCharsField.text = display.chars
                 checkBoxField.isChecked = false
 
-                view.setOnLongClickListener { _ ->
-                    val intent = Intent(EditSiteActivityBase.ACTION_EDIT_SITE)
-                    intent.putExtra(EditSiteActivityBase.EXTRA_SITE_NAME, display.name)
-                    intent.setClass(activity, EditSiteActivity::class.java)
-                    activity.startActivity(intent)
-                    true
-                }
-
                 checkBoxField.setOnCheckedChangeListener { _, isChecked ->
                     when (isChecked) {
                         true -> selectedSites.add(display.name)
@@ -61,6 +52,15 @@ class SearchSitesFragment @Inject constructor() : ListFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        listView.setOnItemLongClickListener { _, listItemView, _, _ ->
+            val siteNameField = listItemView.findViewById(R.id.siteNameInList) as TextView
+            val intent = Intent(EditSiteActivityBase.ACTION_EDIT_SITE)
+            intent.putExtra(EditSiteActivityBase.EXTRA_SITE_NAME, siteNameField.text.toString())
+            intent.setClass(activity, EditSiteActivity::class.java)
+            activity.startActivity(intent)
+            true
+        }
     }
 
     override fun onListItemClick(l: ListView?, v: View, position: Int, id: Long) {
